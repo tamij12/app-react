@@ -1,54 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Box from './Box.js';
-import { useState } from 'react';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
-  // const usersWithGrades = [
-  //   {
-  //     name: 'pepe',
-  //     grade: 10
-  //   },
-  //   {
-  //     name: 'pablo',
-  //     grade: 9
-  //   },
-  //   {
-  //     name: 'ernesto',
-  //     grade: 9.5
-  //   },
-  //   {
-  //     name: 'noe',
-  //     grade: 10
-  //   },
-  //   {
-  //     name: 'ana',
-  //     grade: 8
-  //   }
-  // ]
-  const [user, setUser] = useState('Tania');
-
-  function changeName() {
-    const newName = document.getElementById('nameChangeInput').value;
-    setUser(newName);
-    document.getElementById('nameChangeInput').value= '';
+  const [counter, setCounter] = useState(0);
+  function add() {
+    setCounter(counter + 1);
+  }
+  function subtraction() {
+    setCounter(counter - 1);
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {
-          // usersWithGrades.map((user, index) => {
-          //   return <Box key={index} user={user.name} grade={user.grade} />
-          // })
-        }
-        Hola, {user}!
-        <input id='nameChangeInput' type='text' placeholder='Change your name'/> 
-        <button onClick={changeName}>Change</button>
-      </header>
-    </div>
+    <>
+      <h1>Counter: </h1>
+      <div>
+        <button onClick={() => setCounter(counter + 1)}>+</button>
+        <button>{counter}</button>
+        <button onClick={() => setCounter(counter - 1)}>-</button>
+      </div>
+    </>
   );
 }
 
