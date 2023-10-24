@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React, { createElement, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [counter, setCounter] = useState(0);
-  function add() {
-    setCounter(counter + 1);
-  }
-  function subtraction() {
-    setCounter(counter - 1);
+  const [user, setUser] = useState("");
+  const divSaludo = document.getElementById("saludo");
+
+  function sayHello() {
+    const name = document.getElementById('nameChangeInput').value;
+    setUser(name)
+    const saludo = `Hola ${name}, es un placer conocerte!`;
+    console.log(saludo);
+
+    const h1Name = createElement('h1');
+    h1Name.textContent = saludo;
+    divSaludo.appendChild(h1Name);
+
   }
 
   return (
     <>
-      <h1>Counter: </h1>
       <div>
-        <button onClick={() => setCounter(counter + 1)}>+</button>
-        <button>{counter}</button>
-        <button onClick={() => setCounter(counter - 1)}>-</button>
+        <div className="saludo"></div>
+        <input type="text" id='nameChangeInput' placeholder="Ingresa tu nombre"/>
+        <button onClick={sayHello}>ok!</button>
       </div>
     </>
   );
