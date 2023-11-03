@@ -1,75 +1,65 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 
 import "./home.scss";
 import Box from "../../components/Box/Box";
 import { GradesContext } from "../../components/App/App";
 
 function Home() {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [searchedUser, setSearchedUser] = useState("");
-  const { usersWithGrades, setUsersWithGrades } = useContext(GradesContext);
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const [searchedUser, setSearchedUser] = useState('');
+    const {usersWithGrades, setUsersWithGrades} = useContext(GradesContext);
 
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
+    const averageGrade = () => {
+        const total = usersWithGrades.reduce((acc, user) => {
+            return acc + user.grade;
+        }, 0);
 
-  const addUser = () => {
-    const userValue = document.getElementById("user").value;
-    const gradeValue = Number(document.getElementById("grade").value);
+        return total / usersWithGrades.length;
+    }
 
-    setUsersWithGrades([
-      ...usersWithGrades,
-      {
-        name: userValue,
-        grade: gradeValue,
-      },
-    ]);
+    const avg = useMemo(() => averageGrade(), [usersWithGrades]);
 
-    usersWithGrades.push(setUsersWithGrades);
-  };
+    const toggleTheme = () => {
+        setIsDarkTheme(!isDarkTheme);
+    }
 
-  const searchUser = () => {
-    const userValue = document.getElementById("suser").value;
+    const addUser = () => {
+        const userValue = document.getElementById('user').value;
+        const gradeValue = Number(document.getElementById('grade').value);
 
-    const filteredUsers = usersWithGrades.filter((user) => {
-      return user.name === userValue;
-    });
+        setUsersWithGrades([...usersWithGrades, {
+            name: userValue,
+            grade: gradeValue
+        }]);
+    }
 
-    setSearchedUser(filteredUsers[0]);
-  };
+    const searchUser = () => {
+        const userValue = document.getElementById('suser').value;
 
-  return (
-    <div className={`home ${isDarkTheme ? "dark-theme" : "light-theme"}`}>
-      <ul className="nav-home">
-        <li>
-          <h1>Home</h1>
-        </li>
-        <li>
-          <button onClick={toggleTheme} className="button-theme">Toggle theme</button>
-        </li>
-      </ul>
-      <div className="users">
-        <input id="user" type="text" placeholder="User" />
-        <input id="grade" type="number" placeholder="Grade" />
-        <button onClick={addUser}>Add user</button>
-      </div>
-      <div className="div-list-users">
-        {usersWithGrades.map((user, index) => {
-          return (
-            <div className="list-users" key={index}>
-              <h1>{user.name}</h1>
-              <h2>{user.grade}</h2>
+        setSearchedUser(userValue);
+    }
+
+    return (
+        <div className={`home ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
+            <div className="">
+                <h1>Home</h1>
+                <button onClick={toggleTheme}>Toggle theme</button>
             </div>
-          );
-        })}
-      </div>
-      <div className="search-box">
-        <input id="suser" type="text" placeholder="user" />
-        <button onClick={searchUser}>Search user</button>
-        {searchedUser && <Box name={searchedUser.name} />}
-      </div>
-    </div>
-  );
+            <div className="users">
+                <input id="user" type="text" placeholder="User" />
+                <input id="grade" type="number" placeholder="Grade" />
+                <button onClick={addUser}>Add user</button>
+            </div>
+            <div className="search-box">
+                <input id="suser" type="text" placeholder="user" />
+                <button onClick={searchUser}>Search user</button>
+                {
+                    searchedUser && <Box name={searchedUser.name} />
+                }
+                <span>Average grade: {avg}</span>
+            </div>
+        </div>
+    );
 }
 
 export default Home;
